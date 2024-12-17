@@ -47,11 +47,15 @@ class SplashScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => MenuScreen()),
                 );
               },
-              child: Text('Comenzar'),
+              child: Text('Comenzar',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                backgroundColor: Colors.blueAccent,  // Cambio aquí
+                backgroundColor: Colors.deepPurple,  // Cambio aquí
               ),
             ),
           ],

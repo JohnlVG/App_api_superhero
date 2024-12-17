@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import '../services/api_service.dart';
 import '../models/superhero.dart';
+import 'home_screen.dart';
 
 class AddHeroScreen extends StatefulWidget {
   @override
@@ -20,12 +20,10 @@ class _AddHeroScreenState extends State<AddHeroScreen> {
 
     try {
       Superhero newHero = await apiService.getSuperhero(id);
-      // Aquí puedes agregar el héroe a tu base de datos local o lista
-      // Por ahora solo muestra el héroe en pantalla
+      HomeScreen.addHeroToList(newHero); // Agregar héroe a la lista global
       setState(() {
         loading = false;
       });
-      // Mostrar el superhéroe agregado
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -71,29 +69,48 @@ class _AddHeroScreenState extends State<AddHeroScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Agregar Héroe")),
-      body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          children: [
-            TextField(
-              controller: controller,
-              decoration: InputDecoration(
-                labelText: 'ID del Superhéroe',
-                border: OutlineInputBorder(),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              'assets/2.png',
+              fit: BoxFit.cover,
+            ),
+          ),
+          Center(
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: controller,
+                    decoration: InputDecoration(
+                      labelText: 'ID del Superhéroe',
+                      border: OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Colors.white70,
+                    ),
+                    style: TextStyle(fontSize: 18), // Aumenta el tamaño de la letra
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (controller.text.isNotEmpty) {
+                        addHero(controller.text);
+                      }
+                    },
+                    child: Text(
+                      'Agregar',
+                      style: TextStyle(fontSize: 18), // Aumenta el tamaño de la letra
+                    ),
+                  ),
+                  if (loading) CircularProgressIndicator(),
+                ],
               ),
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                if (controller.text.isNotEmpty) {
-                  addHero(controller.text);
-                }
-              },
-              child: Text('Agregar'),
-            ),
-            if (loading) CircularProgressIndicator(),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

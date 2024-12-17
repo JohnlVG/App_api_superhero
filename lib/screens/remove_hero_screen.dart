@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'home_screen.dart';
 
 class RemoveHeroScreen extends StatefulWidget {
   @override
@@ -14,9 +15,9 @@ class _RemoveHeroScreenState extends State<RemoveHeroScreen> {
       loading = true;
     });
 
-    // Aquí eliminarías el héroe de tu base de datos o lista
-    // Este código es solo para simular el proceso
     await Future.delayed(Duration(seconds: 1));
+
+    HomeScreen.removeHeroFromList(id); // Eliminar héroe de la lista global
 
     setState(() {
       loading = false;
@@ -45,29 +46,41 @@ class _RemoveHeroScreenState extends State<RemoveHeroScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Eliminar Héroe")),
-      body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          children: [
-            TextField(
-              controller: controller,
-              decoration: InputDecoration(
-                labelText: 'ID del Superhéroe',
-                border: OutlineInputBorder(),
-              ),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              'assets/2.png',
+              fit: BoxFit.cover,
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                if (controller.text.isNotEmpty) {
-                  removeHero(controller.text);
-                }
-              },
-              child: Text('Eliminar'),
+          ),
+          Padding(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              children: [
+                TextField(
+                  controller: controller,
+                  decoration: InputDecoration(
+                    labelText: 'ID del Superhéroe',
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.white70,
+                  ),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    if (controller.text.isNotEmpty) {
+                      removeHero(controller.text);
+                    }
+                  },
+                  child: Text('Eliminar'),
+                ),
+                if (loading) CircularProgressIndicator(),
+              ],
             ),
-            if (loading) CircularProgressIndicator(),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
